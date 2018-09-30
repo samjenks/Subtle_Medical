@@ -47,7 +47,7 @@ class Convert(object):
             json.dump(data, outfile)
 
         hf = h5py.File(self.hdf5, 'w')
-        hf.create_dataset('dataset_1', data=self.vol)
+        hf.create_dataset('dataset', data=self.vol)
         hf.close()
 
 
@@ -56,14 +56,13 @@ class Convert(object):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument("-q", "--output-hdf5")
     parser.add_argument("-i", "--input-dicom")
-    parser.add_argument("-h", "--output-hdf5")
     parser.add_argument("-j", "--output-json")
 
 
 
     args = parser.parse_args()
-
     #converter = Convert("../subtlemedicalcodingchallenge/dicom_data/01_BreastMriNactPilot/Mr_Breast - 148579/SagittalIR_3DFGRE_3/", "output_data.h5", 'output.json')
     converter = Convert(args.input-dicom, args.output-hdf5, args.output-json)
     converter.find_dicom()
