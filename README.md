@@ -41,6 +41,24 @@ For the reverse, it mostly happens in opposite order with a few different steps 
 You can test the code with your own command line arguments or you can uncomment out my test code at the bottom of the main
 
 
+# Inference Pipeline and reinventing the gaussian wheel
+
+For the mock gaussian filter, I implemented a math formula for a gaussian distribution and then created the kernel from that.
+if the the filter needs more than one channel it concatenates with itself to the correct number of channels. 
+I assumed that pixel spacing represented the size of the kernel since it wasn't definitively stated. 
+from there I just applied the kernel to the entire input image. 
+
+For the Inference Pipeline, the jobs are stored as a nested
+dictionary with the high-level key being the job name and sub-level keys being the rest of the names in the named tuple with 
+corresponding values. The other minor methods of the Inference class are essentially doing dictionary managment and checking.
+The execution method uses a dispatch table to call the stored functions passing in the needed arguments. I created the 
+pre/post processing function since there weren't any. As the specific specs and purpose were specified, I assumed that 
+pre-processing's job was to collect all of the dicom files in a directory and send them to the job execution function. The
+post-processing method's job was to take the newly blurred images and re-insert them into their corresponding dicoms and
+save them as a sort of update funtionality.
+
+# Web Backend from Scratch
+
 
 
 
