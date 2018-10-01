@@ -1,8 +1,34 @@
 import collections
+import os
+import numpy as np
+import pydicom
+from gaussian_blur3d import gaussian_blur3d
 
 # Create a namedtuple type as the entries in a job registry
 JobEntry = collections.namedtuple('JobEntry',
                                   'name config preprocess postprocess func')
+
+
+def pre_gaussian_blur3d(dir):
+    output = []
+    for file in os.listdir(dir):
+        if file.endswith(".dcm"):
+            output.append(pydicom.dcmread(os.path.join(dir, file)))
+    return output, len(output)
+
+
+def post_gaussian_blur3d(blurred_imgs, dicoms, dir):
+    idx = 0
+    for ds in dicoms:
+        ds.pixel_array.setflags(write=1)
+        np.copyto(ds.pixel_array, blurred_imgs[idx])
+        ds.pixel_array.setflags(write=0)
+
+        if not os.path.isdir(dir):
+            os.mkdir(dir)
+        ds.save_as(dir + "job_output" + str(idx) + ".dcm")
+        idx += 1
+
 
 
 class InferencePipeline:
@@ -87,6 +113,10 @@ class InferencePipeline:
         :param out_dicom_dir: a string, the path to the output DICOM folder
         '''
         job = self.jobs[job_name]
-        preprossing_out = job['preprocess'](in_dicom_dir)
-        job_out = job['func'](preprossing_out, {'spacing', (3, 3, 1)}, job['config'])
-        job['postprocess'](job_out, out_dicom_dir)
+        preprossing_out, size = job['preprocess'](in_dicom_dir)
+        images = []
+        for ds in preprossing_out:
+            images.append(ds.pixel_array)
+
+        job_out = job['func'](np.array(preprossing_out), {'spacing', (3, 3, size)}, job['config'])
+        job['postprocess'](job_out, preprossing_out, out_dicom_dir)
