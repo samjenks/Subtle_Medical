@@ -59,7 +59,6 @@ save them as a sort of update funtionality.
 
 # Web Backend from Scratch
 
-
-
-
-
+I would like to preface this section with the information that my web backend creation knowledge is pretty limited to liberty
+I know 0% of any of the listed frameworks, but I figured I would attempt to make something. I chose to use flask, I think I
+the job route to work functionally as it sets up the inference pipeline, generates a JobEntry and runs it. The query route does not work as I realized that I was running out of time and was far beyond my flask understanding.
