@@ -29,6 +29,9 @@ def gaussian_blur3d(input_3d: np.ndarray, meta_data: dict,
 
     # create kernel
     kernel = gaus_kernel(x, sigma)
+    if z-1 > 0:
+        kernel = kernel.reshape([1,kernel.shape[0],kernel.shape[1]])
+        kernel = np.concatenate([kernel]*z, axis=0)
 
     # apply kernel to image
     output = []
@@ -43,7 +46,3 @@ def gaussian_blur3d(input_3d: np.ndarray, meta_data: dict,
     output = np.array(output)
     output = np.sum( output, axis=0)
     return output
-
-
-if __name__ == '__main__':
-    out = gaussian_blur3d(np.random.rand(25,25,3),{"spacing": (3,3,1)},{'sigma': 1})
