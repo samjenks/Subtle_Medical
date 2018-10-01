@@ -72,10 +72,10 @@ if __name__ == '__main__':
 
     test_args = ['-i', '../subtlemedicalcodingchallenge/dicom_data/01_BreastMriNactPilot/Mr_Breast - 148579/SagittalIR_3DFGRE_3/','-h', 'output_data.h5',  '-j','output.json']
 
-    # args = parser.parse_args()
+    args = parser.parse_args()
 
     #override with test args array
-    args = parser.parse_args(test_args)
+    #args = parser.parse_args(test_args)
 
     #converter = Convert("../subtlemedicalcodingchallenge/dicom_data/01_BreastMriNactPilot/Mr_Breast - 148579/SagittalIR_3DFGRE_3/", "output_data.h5", 'output.json')
     converter = Convert(args.dicom_input, args.hdf5_output, args.json_output)

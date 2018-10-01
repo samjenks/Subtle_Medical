@@ -90,10 +90,10 @@ if __name__ == '__main__':
                  '../subtlemedicalcodingchallenge/dicom_data/01_BreastMriNactPilot/Mr_Breast - 148579/SagittalIR_3DFGRE_3/',
                  '-h', 'output_data.h5', '-o', 'output/']
 
-    # args = parser.parse_args()
+    args = parser.parse_args()
 
     # override with test args array
-    args = parser.parse_args(test_args)
+    #args = parser.parse_args(test_args)
 
     Converter = Convert(args.dicom_input, args.hdf5_output, args.dicom_output)
 
